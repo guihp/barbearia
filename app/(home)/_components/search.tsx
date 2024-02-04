@@ -31,7 +31,7 @@ const Search = ({ defaultValues }: SearchProps) => {
     defaultValues,
   });
 
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
+  function handleSubmit (data: z.infer<typeof formSchema>) {
     router.push(`/barbershops?search=${data.search}`);
   };
 
