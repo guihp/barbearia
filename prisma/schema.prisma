@@ -33,7 +33,7 @@ model Service {
   description  String
   price        Decimal    @db.Decimal(10, 2)
   booking      Booking[]
-  imageUrl String?
+  imageUrl     String
 }
 
 model Booking {
@@ -46,5 +46,3 @@ model Booking {
   user         User       @relation(fields: [userId], references: [id])
   date         DateTime   @db.Timestamp
 }
-
-
