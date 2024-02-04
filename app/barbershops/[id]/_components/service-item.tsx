@@ -10,7 +10,9 @@ import { Calendar } from "@/app/_components/ui/calendar";
 import { useState, useMemo } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "../_helpers/hours";
-import { format } from "date-fns";
+import { format, setHours, setMinutes } from "date-fns";
+import { saveBooking } from "../_actions/save-booking";
+import { Loader2 } from "lucide-react";
 
 interface ServiceItemProps {
     barbershop: Barbershop;
@@ -20,8 +22,11 @@ interface ServiceItemProps {
 
 const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps) => {
 
+    const { data } = useSession()
+
     const [date, setDate] = useState<Date | undefined>(undefined)
     const [hour, setHour] = useState<string | undefined>()
+    const [isLoading, setIsLoading] = useState(false)
 
     function handleDateClick (date: Date | undefined) {
         setDate(date)
@@ -36,6 +41,35 @@ const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps)
         if (!isAuthenticated) {
           return signIn("google");
         }
+    }
+
+    const handleBookingSubmit = async () => {
+
+        setIsLoading(true)
+
+        try {
+            if(!hour || !date || !data?.user){
+                return
+            }
+
+            // fazendo com que a hora fique desse jeito "09: 45"  ["09" : "45" ]
+            const dateHour = Number(hour.split(':')[0])
+            const dateMinutes = Number(hour.split(':')[1]) 
+            const newDate = setMinutes(setHours(date, dateHour), dateMinutes)
+
+            await saveBooking({
+                serviceId: service.id,
+                barbershopId: barbershop.id,
+                date: newDate,
+                userId: (data.user as any).id,
+            });
+
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsLoading(false)
+        }
+
     }
 
     const timeList = useMemo(() => {
@@ -165,7 +199,10 @@ const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps)
 
                                          
                                          <SheetFooter className="px-5">
-                                                <Button disabled={!hour || !date}>Confirmar Reserva</Button>
+                                                <Button onClick={handleBookingSubmit} disabled={!hour || !date || isLoading}>
+                                                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />  }
+                                                    Confirmar Reserva
+                                                </Button>
                                          </SheetFooter>
 
                                     </SheetContent>    
