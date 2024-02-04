@@ -10,7 +10,7 @@ import { Calendar } from "@/app/_components/ui/calendar";
 import { useState, useMemo, useEffect } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "../_helpers/hours";
-import { format, setHours, setMinutes } from "date-fns";
+import { addDays, format, setHours, setMinutes } from "date-fns";
 import { saveBooking } from "../_actions/save-booking";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -170,7 +170,7 @@ const ServiceItem = ({ service, isAuthenticated, barbershop }: ServiceItemProps)
                                                     selected={date}
                                                     onSelect={handleDateClick}
                                                     locale={ptBR}
-                                                    fromDate={new Date()}
+                                                    fromDate={addDays(new Date(), 1)}
                                                     styles={{
                                                         head_cell: {
                                                             width: "100%",
