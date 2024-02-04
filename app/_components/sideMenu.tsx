@@ -53,7 +53,7 @@ const SideMenu = () => {
                                 <h2 className="font-bold">Olá, faça seu login!</h2>
                             </div>
 
-                            <Button className="w-[150px] justify-start" variant="secondary" onClick={handleLoginClick}>
+                            <Button className="w-full justify-start" variant="secondary" onClick={handleLoginClick}>
                                 <LogInIcon className="mr-2" size={20}/>
                                 Fazer login
                             </Button>
@@ -63,7 +63,7 @@ const SideMenu = () => {
 
                         <div className="flex flex-col gap-3 px-5">
                             
-                            <Button variant='outline' className="justify-start w-[100px]" asChild>
+                            <Button variant='outline' className="justify-start w-full" asChild>
                                 <Link href="/">
                                     <HomeIcon size={18} className="mr-2" />
                                     Início
@@ -71,7 +71,7 @@ const SideMenu = () => {
                             </Button>
 
                             {data?.user && (
-                                <Button variant='outline' className="justify-start w-[150px]" asChild>
+                                <Button variant='outline' className="justify-start w-full" asChild>
                                     <Link href="/bookings">
                                         <CalendarIcon size={18} className="mr-2" />
                                         Agendamentos
